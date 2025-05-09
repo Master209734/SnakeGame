@@ -28,7 +28,7 @@ public class MainInterfejs extends JFrame {
 	    bgPanel.add(buttonPanel);
 	    
 	    
-	    
+	    setVisible(true);
 		
 	}
 	
