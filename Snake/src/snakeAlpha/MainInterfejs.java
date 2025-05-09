@@ -27,7 +27,7 @@ public class MainInterfejs extends JFrame {
 	    buttonPanel = new buttonPanel();
 	    bgPanel.add(buttonPanel);
 	    
-	    System.out.print(""asd);
+	   System.out.print(rootPaneCheckingEnabled);
 	    
 	    setVisible(true);
 		
