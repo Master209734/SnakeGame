@@ -6,10 +6,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class LevelPanel extends JPanel{
+public class CustomPanel extends JPanel {
 
-	LevelPanel()
+	
+	CustomPanel()
 	{
 		this.setBackground(Color.blue);
+		
 	}
+	
 }

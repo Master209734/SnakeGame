@@ -1,6 +1,7 @@
 package snakeAlpha;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -14,9 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MainInterfejs extends JFrame implements ActionListener {
-	JPanel bgPanel,instruction, buttonPanel;
+	private JPanel bgPanel,instructionPanel,customPanel,levelPanel, buttonPanel,top,bottom, cards;
 	private JButton startButton, changeButton, levelButton, manButton;
-	private JPanel top,bottom;
+	private CardLayout cardLayout;
 	
 	MainInterfejs()
 	{
@@ -24,9 +25,14 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	    setSize(1165, 835);
 	    setTitle("Snake Game Menu");
 	    
+	    cardLayout = new CardLayout();
+        cards = new JPanel(cardLayout); // Panel do zarządzania widokami
+        this.add(cards);
+	    
+	    
+	    // panel głowny
 	    bgPanel = new ImagePanel("/IMG_0602.JPG");	
 	    bgPanel.setPreferredSize(new Dimension(1165, 300));
-	    this.add(bgPanel);
 	    
 	    
 	    buttonPanel = new JPanel();	    
@@ -77,32 +83,54 @@ public class MainInterfejs extends JFrame implements ActionListener {
   	        JButton music = new MusicButton("Music");
   	        bottom.add(Box.createHorizontalStrut(15));
   	        bottom.add(music);
-  		// Instruction Listener
-	    
-	    
+  		
 	    bgPanel.add(buttonPanel);
+	      
+	    // Ustawienie cardowego Layoutu
 	    
+	    cards.add(bgPanel,"MainMenu");
 	    
-	    
+        instructionPanel = new InstructionPanel();
+        instructionPanel.add(createBackButton());
+        
+        cards.add(instructionPanel,"InstructionPanel");
+	   
+        levelPanel = new LevelPanel();
+        levelPanel.add(createBackButton());
+        
+        cards.add(levelPanel,"LevelPanel");
+        
+        customPanel = new CustomPanel();
+        customPanel.add(createBackButton());
+        
+        cards.add(customPanel,"CustomPanel");
 	    
 	    setVisible(true);
 	}
 	
-
+	private JButton createBackButton() {
+	    JButton back = new JButton("Powrót");
+	    back.addActionListener(e -> cardLayout.show(cards, "MainMenu"));
+	    return back;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		JButton sourceButton = (JButton) e.getSource();
         
         if (sourceButton == manButton) {
-          //  instructionPanel = new InstructionPanel();
-           // ChangePanel(instructionPanel);
+        	cardLayout.show(cards,"InstructionPanel");
             
         } else if (sourceButton == changeButton) {
-        //	changeFrame = new ChangePanel();
-        	
+       	 	cardLayout.show(cards,"CustomPanel");
+       	 
         } else if (sourceButton == levelButton) {
-        //    levelFrame = new LevelPanel();
+       	 	cardLayout.show(cards,"LevelPanel");
+ 
+        }else if(sourceButton == startButton) {
+        	
+        	
         }
 		
 	}
