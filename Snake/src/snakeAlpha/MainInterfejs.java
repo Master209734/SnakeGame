@@ -27,7 +27,6 @@ public class MainInterfejs extends JFrame {
 	    buttonPanel = new buttonPanel();
 	    bgPanel.add(buttonPanel);
 	    
-	    System.out.print("dtk");
 	    
 	    
 	    setVisible(true);
