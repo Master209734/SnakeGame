@@ -3,7 +3,7 @@ package snakeAlpha;
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame{
-	GameFrame(){
+	GameFrame(MainInterfejs mainInter){
 		GamePanel gPanel = new GamePanel();
 		this.add(gPanel);
 		
@@ -13,5 +13,11 @@ public class GameFrame extends JFrame{
 		this.pack();
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);
+		
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosed(java.awt.event.WindowEvent e) {
+				mainInter.setVisible(true);
+			}
+		});
 	}
 }

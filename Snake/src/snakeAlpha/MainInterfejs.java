@@ -135,7 +135,8 @@ public class MainInterfejs extends JFrame implements ActionListener {
        	 	cardLayout.show(cards,"LevelPanel");
  
         }else if(sourceButton == startButton) {
-        	GameFrame gFrame = new GameFrame();
+        	GameFrame gFrame = new GameFrame(this);
+        	this.setVisible(false);
         }
 		
 	}
