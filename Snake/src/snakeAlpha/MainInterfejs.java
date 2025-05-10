@@ -19,6 +19,8 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	private JPanel bgPanel,instructionPanel,customPanel,levelPanel, buttonPanel,top,bottom, gamePanel,cards;
 	private JButton startButton, changeButton, levelButton, manButton;
 	private CardLayout cardLayout;
+	private String CustomSnake = "Green";
+	private String Level = "Normal";
 	
 	MainInterfejs()
 	{
@@ -100,12 +102,12 @@ public class MainInterfejs extends JFrame implements ActionListener {
         cards.add(instructionPanel,"InstructionPanel");
 	   
         levelPanel = new LevelPanel();
-        levelPanel.add(createBackButton());
+        levelPanel.add(createBackButton(),BorderLayout.NORTH);
         
         cards.add(levelPanel,"LevelPanel");
         
         customPanel = new CustomPanel();
-        customPanel.add(createBackButton());
+        ((CustomPanel) customPanel).GetCustomSnakePanel().add(createBackButton());
         
         cards.add(customPanel,"CustomPanel");
         
@@ -140,6 +142,19 @@ public class MainInterfejs extends JFrame implements ActionListener {
         }
 		
 	}
+	public void SetLevel(String level) {
+		this.Level = level;
+	}
+	public String GetLevel() {
+		return this.Level;
+	}
+	public void SetCustomSnake(String customSnake) {
+		this.CustomSnake = customSnake;
+	}
+	public String GetCustomSnake() {
+		return this.CustomSnake;
+	}
+	
 	public static void main(String[] args) {
 
 		MainInterfejs InterFejs = new MainInterfejs();

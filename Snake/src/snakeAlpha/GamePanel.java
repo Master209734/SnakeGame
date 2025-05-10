@@ -28,8 +28,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.setBackground(Color.black);
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
-		startGame();
-		
+		startGame();		
 	}
 	public void startGame() {
 		Apple();
