@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -15,15 +16,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MainInterfejs extends JFrame implements ActionListener {
-	private JPanel bgPanel,instructionPanel,customPanel,levelPanel, buttonPanel,top,bottom, cards;
+	private JPanel bgPanel,instructionPanel,customPanel,levelPanel, buttonPanel,top,bottom, gamePanel,cards;
 	private JButton startButton, changeButton, levelButton, manButton;
 	private CardLayout cardLayout;
 	
 	MainInterfejs()
 	{
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    setSize(1165, 835);
 	    setTitle("Snake Game Menu");
+	    setResizable(false);
+	    setLocationRelativeTo(null);
 	    
 	    cardLayout = new CardLayout();
         cards = new JPanel(cardLayout); // Panel do zarządzania widokami
@@ -52,7 +55,8 @@ public class MainInterfejs extends JFrame implements ActionListener {
            startButton.setMaximumSize(startButtonSize); // Wymuszenie maksymalnego rozmiaru
            startButton.setAlignmentX(CENTER_ALIGNMENT); // Wycentrowanie w osi X
            startButton.setFont(new Font("Arial", Font.BOLD, 25));
-  		
+           startButton.addActionListener(this);
+           
   		top.add(startButton);
   		buttonPanel.add(top,BorderLayout.NORTH);
   		
@@ -104,6 +108,8 @@ public class MainInterfejs extends JFrame implements ActionListener {
         customPanel.add(createBackButton());
         
         cards.add(customPanel,"CustomPanel");
+        
+       
 	    
 	    setVisible(true);
 	}
@@ -129,14 +135,13 @@ public class MainInterfejs extends JFrame implements ActionListener {
        	 	cardLayout.show(cards,"LevelPanel");
  
         }else if(sourceButton == startButton) {
-        	
-        	
+        	GameFrame gFrame = new GameFrame();
         }
 		
 	}
 	public static void main(String[] args) {
 
-		new MainInterfejs();
+		MainInterfejs InterFejs = new MainInterfejs();
 	}
 
 	
