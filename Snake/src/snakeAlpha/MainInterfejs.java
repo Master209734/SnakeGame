@@ -95,7 +95,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	    cards.add(bgPanel,"MainMenu");
 	    
         instructionPanel = new InstructionPanel();
-        instructionPanel.add(createBackButton());
+        ((InstructionPanel) instructionPanel).GetInstructionPanel().add(createBackButton());
         
         cards.add(instructionPanel,"InstructionPanel");
 	   

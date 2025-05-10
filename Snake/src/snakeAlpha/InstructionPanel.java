@@ -8,10 +8,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class InstructionPanel extends JPanel {
-	
+	JPanel BotPanel;
 	InstructionPanel()
 	{
-        this.setBackground(Color.black);
+		this.setSize(1165,835);
+		BotPanel = new ImagePanel("/instr.png");
+		BotPanel.setPreferredSize(new Dimension(1165,835));
+        this.add(BotPanel);        
+	}
+	public JPanel GetInstructionPanel() {
+		return BotPanel;
 	}
 	
 }

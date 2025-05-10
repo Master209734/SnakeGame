@@ -10,7 +10,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	static final int screen_height = 600;
 	static final int unit_size = 25; 
 	static final int game_units = (screen_width * screen_height) / unit_size;
-	static final int delay = 100;
+	static final int delay = 75;
 	final int x[] = new int[game_units];
 	final int y[] = new int[game_units];
 	int bodyParts = 5;
@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	Timer timer;
 	Random random;
 	
-	GamePanel(){
+	GamePanel(MainInterfejs mainInter){
 		random = new Random();
 		this.setPreferredSize(new Dimension(screen_width,screen_height));
 		this.setBackground(Color.black);

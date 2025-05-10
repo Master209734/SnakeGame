@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class GameFrame extends JFrame{
 	GameFrame(MainInterfejs mainInter){
-		GamePanel gPanel = new GamePanel();
+		GamePanel gPanel = new GamePanel(mainInter);
 		this.add(gPanel);
 		
 		this.setTitle("SNAKE");
