@@ -6,23 +6,37 @@ import javax.swing.*;
 import java.util.Random; 
 
 public class GamePanel extends JPanel implements ActionListener{
-	static final int screen_width = 600;
-	static final int screen_height = 600;
-	static final int unit_size = 25; 
-	static final int game_units = (screen_width * screen_height) / unit_size;
-	static final int delay = 75;
-	final int x[] = new int[game_units];
-	final int y[] = new int[game_units];
-	int bodyParts = 5;
+	int screen_width;
+	static int screen_height;
+	static int unit_size = 25; 
+	static int game_units;
+	static int delay;
+    int x[];
+	int y[];
+	int bodyParts;
 	int applesEaten = 0;
 	int appleX;
 	int appleY;
 	char direction = 'R';
-	boolean running = false; 
+	boolean running = false;
+	String SnakeColor;
 	Timer timer;
 	Random random;
 	
-	GamePanel(MainInterfejs mainInter){
+	GamePanel(MainInterfejs mainInter,SnakeParameters snakeParameters){
+		
+		// Ustawienie Parametrów
+		this.screen_width = snakeParameters.GetWidth();
+		this.screen_height = snakeParameters.GetHeight();
+		this.delay = snakeParameters.GetDelay();
+		this.bodyParts = snakeParameters.GetParts();
+		this.SnakeColor = snakeParameters.GetSnakeColor();
+		
+		game_units = (screen_width * screen_height) / unit_size;
+		
+		x = new int[game_units];
+		y = new int[game_units];
+		
 		random = new Random();
 		this.setPreferredSize(new Dimension(screen_width,screen_height));
 		this.setBackground(Color.black);
@@ -55,7 +69,7 @@ public class GamePanel extends JPanel implements ActionListener{
 					g.fillRect(x[i], y[i], unit_size, unit_size);
 				}
 				else {
-					g.setColor(new Color(45,150,0));
+					g.setColor(BodyColor(this.SnakeColor));
 					g.fillRect(x[i], y[i], unit_size, unit_size);
 				}
 			}
@@ -167,6 +181,46 @@ public class GamePanel extends JPanel implements ActionListener{
 		}
 		 
 	}
+	public Color BodyColor(String type){
+		if(type == "Zielony")
+		{
+			return Color.green;
+		}
+		else if(type == "Czerwony")
+		{
+			return Color.red;
+		}
+		else if(type == "Kolorowy"){
+			random = new Random();
+			Color k = new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255));
+			return k;
+		}
+		else {
+			return Color.black;
+		}
+		
+	}
+	public Color HeadColor(String type){
+		if(type == "Zielony")
+		{
+			Color k = new Color(5, 97, 29);
+			return k;
+		}
+		else if(type == "Czerwony")
+		{
+			Color k = new Color(245, 66, 66);
+			return k;
+		}
+		else if(type == "Kolorowy"){
+			Color k = new Color(34, 5, 97);
+			return k;
+		}
+		else {
+			return Color.black;
+		}
+	}
+		
+//	}
 	
 
 }

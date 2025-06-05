@@ -21,6 +21,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	private CardLayout cardLayout;
 	private String CustomSnake = "Green";
 	private String Level = "Normal";
+	private SnakeParameters snakeParameters;
 	
 	MainInterfejs()
 	{
@@ -30,6 +31,9 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 	    
+	    snakeParameters = new SnakeParameters("Zielony",5,600,600,75);
+	    
+	    // Layout
 	    cardLayout = new CardLayout();
         cards = new JPanel(cardLayout); // Panel do zarządzania widokami
         this.add(cards);
@@ -106,7 +110,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
         
         cards.add(levelPanel,"LevelPanel");
         
-        customPanel = new CustomPanel();
+        customPanel = new CustomPanel(snakeParameters);
         ((CustomPanel) customPanel).GetCustomSnakePanel().add(createBackButton());
         
         cards.add(customPanel,"CustomPanel");
@@ -115,6 +119,8 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	    
 	    setVisible(true);
 	}
+	
+	
 	
 	private JButton createBackButton() {
 	    JButton back = new JButton("Powrót");
@@ -137,7 +143,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
        	 	cardLayout.show(cards,"LevelPanel");
  
         }else if(sourceButton == startButton) {
-        	GameFrame gFrame = new GameFrame(this);
+        	GameFrame gFrame = new GameFrame(this,snakeParameters);
         	this.setVisible(false);
         }
 		

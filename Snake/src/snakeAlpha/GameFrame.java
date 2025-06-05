@@ -3,8 +3,8 @@ package snakeAlpha;
 import javax.swing.JFrame;
 
 public class GameFrame extends JFrame{
-	GameFrame(MainInterfejs mainInter){
-		GamePanel gPanel = new GamePanel(mainInter);
+	GameFrame(MainInterfejs mainInter,SnakeParameters snakeParameters){
+		GamePanel gPanel = new GamePanel(mainInter,snakeParameters);
 		this.add(gPanel);
 		
 		this.setTitle("SNAKE");

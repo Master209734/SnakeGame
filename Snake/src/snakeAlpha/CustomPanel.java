@@ -12,14 +12,27 @@ import javax.swing.JPanel;
 public class CustomPanel extends JPanel {
 
 	JPanel CustomSnakePanel;
-	CustomPanel()
+	CustomPanel(SnakeParameters par)
 	{
 		this.setLayout(new BorderLayout());
 		
 		JPanel ButtonPanel = new JPanel(new GridLayout(1,3));
 		JButton button1 = new JButton("Zielony");
 		JButton button2 = new JButton("Czerwony");
-		JButton button3 = new JButton("Niebieski");
+		JButton button3 = new JButton("Kolorowy");
+		
+		button1.addActionListener(e->{
+			par.SnakeColor = "Zielony";
+		});
+		button2.addActionListener(e->{
+			par.SnakeColor = "Czerwony";
+		});
+		button3.addActionListener(e->{
+			par.SnakeColor = "Kolorowy";
+		});
+		
+		
+		
 		ButtonPanel.add(button1);
 		ButtonPanel.add(button2);
 		ButtonPanel.add(button3);
