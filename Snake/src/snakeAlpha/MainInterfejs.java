@@ -31,7 +31,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 	    
-	    snakeParameters = new SnakeParameters("Zielony",5,600,600,75);
+	    snakeParameters = new SnakeParameters("Zielony",5,800,800,80);
 	    
 	    // Layout
 	    cardLayout = new CardLayout();

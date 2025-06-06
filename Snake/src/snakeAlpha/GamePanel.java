@@ -17,11 +17,23 @@ public class GamePanel extends JPanel implements ActionListener{
 	int applesEaten = 0;
 	int appleX;
 	int appleY;
+	int peachX;
+	int peachY;
+	int bombX;
+	int bombY;
+	boolean PeachExsist = false;
+	boolean BombExsist = false;
 	char direction = 'R';
 	boolean running = false;
 	String SnakeColor;
 	Timer timer;
+	Timer peachTimer;
+	int peachTime = 1500;
+	Timer bombTimer;
+	int bombTime = 5000;
 	Random random;
+	int Score = 0;
+	String LevelType;
 	
 	GamePanel(MainInterfejs mainInter,SnakeParameters snakeParameters){
 		
@@ -30,7 +42,10 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.screen_height = snakeParameters.GetHeight();
 		this.delay = snakeParameters.GetDelay();
 		this.bodyParts = snakeParameters.GetParts();
+		
 		this.SnakeColor = snakeParameters.GetSnakeColor();
+		
+		LevelType = "fancy"; // classic, fancy, extreme
 		
 		game_units = (screen_width * screen_height) / unit_size;
 		
@@ -56,16 +71,29 @@ public class GamePanel extends JPanel implements ActionListener{
 	}
 	public void draw(Graphics g) {
 		if (running) {
+			// Siatka
 			for(int i = 0; i < screen_width/unit_size; i++) {
 				g.drawLine(i*unit_size, 0, i*unit_size, screen_height);
 				g.drawLine(0,i*unit_size, screen_width, i*unit_size);
 			}
+			//Jablka
 			g.setColor(Color.RED);
 			g.fillOval(appleX, appleY, unit_size, unit_size);
+			// Gruszki
+			if(PeachExsist) {
+				g.setColor(Color.BLUE);
+				g.fillOval(peachX, peachY, unit_size, unit_size);
+			}
+			// Bomby
+			if(BombExsist) {
+				g.setColor(Color.CYAN);
+				g.fillOval(bombX, bombY, unit_size, unit_size);
+			}
 			
+			//Rysowanie weza
 			for (int i = 0; i < bodyParts; i++) {
 				if (i == 0) {
-					g.setColor(Color.GREEN);
+					g.setColor(HeadColor(this.SnakeColor));
 					g.fillRect(x[i], y[i], unit_size, unit_size);
 				}
 				else {
@@ -73,10 +101,24 @@ public class GamePanel extends JPanel implements ActionListener{
 					g.fillRect(x[i], y[i], unit_size, unit_size);
 				}
 			}
+			// Przeszkody
+				g.setColor(Color.WHITE);
+			/*	for (int i = 10; i<  (screen_height/unit_size - 9); i++) {
+					g.fillRect(screen_width/2, unit_size * i, unit_size, unit_size);
+					g.fillRect(unit_size*i, screen_height/2, unit_size, unit_size);
+				} */
+				if (LevelType == "fancy") {
+				for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
+					g.fillRect(5*unit_size, i*unit_size, unit_size, unit_size);
+					g.fillRect(screen_width - 6*unit_size, i*unit_size, unit_size, unit_size);
+				}
+				}
+			
+			// Wyswietlanie wyniku
 			g.setColor(Color.red);
 			g.setFont(new Font("Ink Free",Font.BOLD,25));
 			FontMetrics metrics = getFontMetrics(g.getFont());
-			g.drawString("Score: "+applesEaten, (screen_width - metrics.stringWidth("Score: "+applesEaten))/2,g.getFont().getSize());
+			g.drawString("Score: "+Score, (screen_width - metrics.stringWidth("Score: "+Score))/2,g.getFont().getSize());
 		}
 		else {
 			gameOver(g);
@@ -106,13 +148,95 @@ public class GamePanel extends JPanel implements ActionListener{
 	public void Apple() {
 	 appleX = random.nextInt((int)(screen_width/unit_size))*unit_size;
 	 appleY = random.nextInt((int)(screen_height/unit_size))*unit_size;
+	 if (LevelType == "fancy") {
+			// Czy nie pokrywa sie z przeszkodami
+			for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
+			if(((appleX == 5*unit_size) && (appleY == i*unit_size) )
+					|| ((appleX == screen_width - 6*unit_size) && (appleY == i*unit_size) )) {
+					
+				appleX = appleX + unit_size;
+			}
+			}
+	 }
 	 
+	}
+	public void Peach() {
+		 peachX = random.nextInt((int)(screen_width/unit_size))*unit_size;
+		 peachY = random.nextInt((int)(screen_height/unit_size))*unit_size;
+	}
+	public void Bomb() {
+		 bombX = random.nextInt((int)(screen_width/unit_size))*unit_size;
+		 bombY = random.nextInt((int)(screen_height/unit_size))*unit_size;
 	}
 	public void checkApple() {
 		if((appleX == x[0]) && (appleY == y[0])) {
 			bodyParts++;
 			applesEaten++;
+			Score++;
 			Apple(); 
+			
+			if (LevelType == "fancy" || LevelType == "extreme") {
+			if (applesEaten % 2 == 0) {
+				Peach();
+				PeachExsist = true;
+				
+				if (peachTimer != null) {
+					peachTimer.stop(); // zatrzymaj poprzedni jeśli był
+				}
+
+				// Peach istnieje tylko 2 sekundy
+				peachTimer = new Timer(peachTime, new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						PeachExsist = false;
+						peachTimer.stop(); // zatrzymaj timer po wykonaniu
+					}
+				});
+				peachTimer.setRepeats(false); // tylko raz
+				peachTimer.start();
+			}
+			
+			Random rand = new Random();
+			if ( (rand.nextInt(10) + 1) <= 5) {
+				Bomb();
+				BombExsist = true;
+				if (bombTimer != null) {
+					bombTimer.stop(); // zatrzymaj poprzedni jeśli był
+				}
+
+				// Peach istnieje tylko 2 sekundy
+				bombTimer = new Timer(bombTime, new ActionListener() {
+					public void actionPerformed(ActionEvent evt) {
+						BombExsist = false;
+						bombTimer.stop(); // zatrzymaj timer po wykonaniu
+					}
+				});
+				bombTimer.setRepeats(false); // tylko raz
+				bombTimer.start();
+			}		
+			
+		}}
+	}
+	public void checkPeach() {
+		if((peachX == x[0]) && (peachY == y[0])) {
+			Score +=2;
+			PeachExsist = false;
+		}
+	}
+	public void checkBomb() {
+		if((bombX == x[0]) && (bombY == y[0])) {
+			if(Score%2 == 0) {
+				Score = Score/2;
+			}
+			else {
+				Score = (int)Score/2 + 1;
+			}
+			if(bodyParts%2 == 0) {
+				bodyParts = bodyParts/2;
+			}
+			else {
+				bodyParts = (int)bodyParts/2 + 1;
+			}
+			BombExsist = false;
 		}
 	}
 	public void checkCollisions() {
@@ -126,7 +250,18 @@ public class GamePanel extends JPanel implements ActionListener{
 		if (x[0] < 0) running = false;
 		if (x[0] > screen_width) running = false;
 		if (y[0] < 0) running = false;
-		if (y[0] > screen_height) running = false;
+		if (y[0] > screen_height-unit_size) running = false;
+		
+		if (LevelType == "fancy") {
+		// Collisions with przeszkody
+		for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
+		if(((x[0] == 5*unit_size) && (y[0] == i*unit_size) )
+				|| ((x[0] == screen_width - 6*unit_size) && (y[0] == i*unit_size) )) {
+			running = false;
+		}
+		}
+		}		
+		
 		
 		if(!running) {
 			timer.stop();
@@ -136,7 +271,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		g.setColor(Color.red);
 		g.setFont(new Font("Ink Free",Font.BOLD,25));
 		FontMetrics metrics1 = getFontMetrics(g.getFont());
-		g.drawString("Score: "+applesEaten, (screen_width - metrics1.stringWidth("Score: "+applesEaten))/2,g.getFont().getSize());
+		g.drawString("Score: "+Score, (screen_width - metrics1.stringWidth("Score: "+Score))/2,g.getFont().getSize());
 		
 		g.setColor(Color.red);
 		g.setFont(new Font("Ink Free",Font.BOLD,75));
@@ -148,8 +283,15 @@ public class GamePanel extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		if(running) {
 			move();
-			checkApple();
 			checkCollisions(); 
+			checkApple(); 
+			if(PeachExsist) {
+				checkPeach();
+			}
+			if(BombExsist) {
+				checkBomb();
+			}
+			
 		}
 		repaint();
 	}
@@ -220,7 +362,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		}
 	}
 		
-//	}
+
 	
 
 }
