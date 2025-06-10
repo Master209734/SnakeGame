@@ -120,13 +120,11 @@ public class GamePanel extends JPanel implements ActionListener{
 			// Przeszkody
 				g.setColor(Color.WHITE);
 				if (LevelType == "Extreme") {
-					
-					
+					for (int i = 10; i<  (screen_height/unit_size - 9); i++) {
+						g.fillRect(screen_width/2, unit_size * i, unit_size, unit_size);
+						g.fillRect(unit_size*i, screen_height/2, unit_size, unit_size);
+					}
 				}
-			/*	for (int i = 10; i<  (screen_height/unit_size - 9); i++) {
-					g.fillRect(screen_width/2, unit_size * i, unit_size, unit_size);
-					g.fillRect(unit_size*i, screen_height/2, unit_size, unit_size);
-				} */
 				if (LevelType == "Fancy") {
 				for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
 					g.fillRect(5*unit_size, i*unit_size, unit_size, unit_size);
