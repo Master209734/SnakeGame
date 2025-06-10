@@ -19,7 +19,7 @@ public class CustomPanel extends JPanel {
 		JPanel ButtonPanel = new JPanel(new GridLayout(1,3));
 		JButton button1 = new JButton("Zielony");
 		JButton button2 = new JButton("Czerwony");
-		JButton button3 = new JButton("Kolorowy");
+		JButton button3 = new JButton("Niebieski");
 		
 		button1.addActionListener(e->{
 			par.SnakeColor = "Zielony";
@@ -28,7 +28,7 @@ public class CustomPanel extends JPanel {
 			par.SnakeColor = "Czerwony";
 		});
 		button3.addActionListener(e->{
-			par.SnakeColor = "Kolorowy";
+			par.SnakeColor = "Niebieski";
 		});
 		
 		

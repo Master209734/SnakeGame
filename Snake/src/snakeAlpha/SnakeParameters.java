@@ -1,19 +1,22 @@
 package snakeAlpha;
 
 public class SnakeParameters {
-		String SnakeColor = "Zielony";
+		String SnakeColor;
 		int Parts;
 		int width;
 		int height;
 		int delay;
-		SnakeParameters(String s, int P, int w, int h, int d){
-			this.SnakeColor = s;
-			this.Parts = P;
-			this.width = w;
-			this.height = h;
-			this.delay = d;
-
+		String Level;
+		
+		SnakeParameters(){
+			this.SnakeColor = "Zielony";
+			this.Parts = 5;
+			this.width = 600;
+			this.height = 600;
+			this.delay = 80;
+			this.Level = "Classic";
 		}
+		
 		
 		public String GetSnakeColor() {
 			return SnakeColor;
@@ -44,6 +47,12 @@ public class SnakeParameters {
 		}
 		public void SetDelay(int p) {
 			this.delay = p;
+		}
+		public String GetLevel() {
+			return Level;
+		}
+		public void SetLevel(String s) {
+			this.Level = s;
 		}
 		
 }

@@ -31,7 +31,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
 	    setResizable(false);
 	    setLocationRelativeTo(null);
 	    
-	    snakeParameters = new SnakeParameters("Zielony",5,800,800,80);
+	    snakeParameters = new SnakeParameters();
 	    
 	    // Layout
 	    cardLayout = new CardLayout();
@@ -73,7 +73,7 @@ public class MainInterfejs extends JFrame implements ActionListener {
   	        bottom.setAlignmentX(CENTER_ALIGNMENT);
 
   	        // Tworzenie przycisków
-  	        changeButton = new JButton("Zmień Ustawienia");
+  	        changeButton = new JButton("Zmień Kolor");
   	        levelButton = new JButton("Poziom Gry");
   	        manButton = new JButton("Instrukcja");
 
@@ -105,8 +105,8 @@ public class MainInterfejs extends JFrame implements ActionListener {
         
         cards.add(instructionPanel,"InstructionPanel");
 	   
-        levelPanel = new LevelPanel();
-        levelPanel.add(createBackButton(),BorderLayout.NORTH);
+        levelPanel = new LevelPanel(snakeParameters);
+        ((LevelPanel) levelPanel).GetTopPanel().add(createBackButton(),BorderLayout.NORTH);
         
         cards.add(levelPanel,"LevelPanel");
         

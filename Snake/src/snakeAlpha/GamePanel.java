@@ -2,6 +2,14 @@ package snakeAlpha;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*; 
 import java.util.Random; 
 
@@ -28,14 +36,17 @@ public class GamePanel extends JPanel implements ActionListener{
 	String SnakeColor;
 	Timer timer;
 	Timer peachTimer;
-	int peachTime = 1500;
+	int peachTime = 2000;
 	Timer bombTimer;
 	int bombTime = 5000;
 	Random random;
 	int Score = 0;
 	String LevelType;
+	JButton Rbutton;
+	boolean buttonAdded;
+	GameFrame gf;
 	
-	GamePanel(MainInterfejs mainInter,SnakeParameters snakeParameters){
+	GamePanel(MainInterfejs mainInter,SnakeParameters snakeParameters,GameFrame gf){
 		
 		// Ustawienie Parametrów
 		this.screen_width = snakeParameters.GetWidth();
@@ -43,9 +54,10 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.delay = snakeParameters.GetDelay();
 		this.bodyParts = snakeParameters.GetParts();
 		
+		this.LevelType = snakeParameters.GetLevel();
 		this.SnakeColor = snakeParameters.GetSnakeColor();
 		
-		LevelType = "fancy"; // classic, fancy, extreme
+		//LevelType = "fancy"; // classic, fancy, extreme
 		
 		game_units = (screen_width * screen_height) / unit_size;
 		
@@ -57,13 +69,17 @@ public class GamePanel extends JPanel implements ActionListener{
 		this.setBackground(Color.black);
 		this.setFocusable(true);
 		this.addKeyListener(new MyKeyAdapter());
-		startGame();		
+		startGame();	
+		this.setFocusable(true);
+		this.requestFocusInWindow();
+		this.gf = gf;
 	}
 	public void startGame() {
 		Apple();
 		running = true;
 		timer = new Timer(delay,this);
 		timer.start();
+		requestFocusInWindow();
 	}
 	public void paintComponent(Graphics g) {
 		 super.paintComponent(g);
@@ -74,7 +90,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			// Siatka
 			for(int i = 0; i < screen_width/unit_size; i++) {
 				g.drawLine(i*unit_size, 0, i*unit_size, screen_height);
-				g.drawLine(0,i*unit_size, screen_width, i*unit_size);
+			g.drawLine(0,i*unit_size, screen_width, i*unit_size);
 			}
 			//Jablka
 			g.setColor(Color.RED);
@@ -103,11 +119,15 @@ public class GamePanel extends JPanel implements ActionListener{
 			}
 			// Przeszkody
 				g.setColor(Color.WHITE);
+				if (LevelType == "Extreme") {
+					
+					
+				}
 			/*	for (int i = 10; i<  (screen_height/unit_size - 9); i++) {
 					g.fillRect(screen_width/2, unit_size * i, unit_size, unit_size);
 					g.fillRect(unit_size*i, screen_height/2, unit_size, unit_size);
 				} */
-				if (LevelType == "fancy") {
+				if (LevelType == "Fancy") {
 				for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
 					g.fillRect(5*unit_size, i*unit_size, unit_size, unit_size);
 					g.fillRect(screen_width - 6*unit_size, i*unit_size, unit_size, unit_size);
@@ -174,8 +194,9 @@ public class GamePanel extends JPanel implements ActionListener{
 			applesEaten++;
 			Score++;
 			Apple(); 
+			playSound("Eat.wav");
 			
-			if (LevelType == "fancy" || LevelType == "extreme") {
+			if (LevelType == "Fancy" || LevelType == "Extreme") {
 			if (applesEaten % 2 == 0) {
 				Peach();
 				PeachExsist = true;
@@ -220,16 +241,13 @@ public class GamePanel extends JPanel implements ActionListener{
 		if((peachX == x[0]) && (peachY == y[0])) {
 			Score +=2;
 			PeachExsist = false;
+			playSound("Eat.wav");
 		}
 	}
 	public void checkBomb() {
 		if((bombX == x[0]) && (bombY == y[0])) {
-			if(Score%2 == 0) {
-				Score = Score/2;
-			}
-			else {
-				Score = (int)Score/2 + 1;
-			}
+			Score = Score - 5;
+			
 			if(bodyParts%2 == 0) {
 				bodyParts = bodyParts/2;
 			}
@@ -237,6 +255,7 @@ public class GamePanel extends JPanel implements ActionListener{
 				bodyParts = (int)bodyParts/2 + 1;
 			}
 			BombExsist = false;
+			playSound("Eat.wav");
 		}
 	}
 	public void checkCollisions() {
@@ -252,7 +271,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		if (y[0] < 0) running = false;
 		if (y[0] > screen_height-unit_size) running = false;
 		
-		if (LevelType == "fancy") {
+		if (LevelType == "Fancy") {
 		// Collisions with przeszkody
 		for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
 		if(((x[0] == 5*unit_size) && (y[0] == i*unit_size) )
@@ -277,6 +296,8 @@ public class GamePanel extends JPanel implements ActionListener{
 		g.setFont(new Font("Ink Free",Font.BOLD,75));
 		FontMetrics metrics2 = getFontMetrics(g.getFont());
 		g.drawString("Game Over", (screen_width - metrics2.stringWidth("Game Over"))/2, screen_height/2);
+		AddButton();
+		playSound("GameDIE.wav");
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -291,8 +312,8 @@ public class GamePanel extends JPanel implements ActionListener{
 			if(BombExsist) {
 				checkBomb();
 			}
+			}
 			
-		}
 		repaint();
 	}
 	public class MyKeyAdapter extends KeyAdapter{
@@ -324,6 +345,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		 
 	}
 	public Color BodyColor(String type){
+		if(this.LevelType != "Extreme") {
 		if(type == "Zielony")
 		{
 			return Color.green;
@@ -332,17 +354,22 @@ public class GamePanel extends JPanel implements ActionListener{
 		{
 			return Color.red;
 		}
-		else if(type == "Kolorowy"){
-			random = new Random();
-			Color k = new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255));
-			return k;
+		else if(type == "Niebieski"){
+			return Color.BLUE;
 		}
 		else {
 			return Color.black;
 		}
+		}
+		else {
+			random = new Random();
+			Color k = new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255));
+			return k;
+		}
 		
 	}
 	public Color HeadColor(String type){
+		if(this.LevelType != "Extreme") {
 		if(type == "Zielony")
 		{
 			Color k = new Color(5, 97, 29);
@@ -353,13 +380,45 @@ public class GamePanel extends JPanel implements ActionListener{
 			Color k = new Color(245, 66, 66);
 			return k;
 		}
-		else if(type == "Kolorowy"){
+		else if(type == "Niebieski"){
 			Color k = new Color(34, 5, 97);
 			return k;
 		}
 		else {
 			return Color.black;
 		}
+		}
+		else {
+			random = new Random();
+			Color k = new Color(random.nextInt(255),random.nextInt(255),random.nextInt(255));
+			return k;
+		}
+	}
+	public void AddButton() {
+		Rbutton = new JButton("Menu");
+        Rbutton.setBounds(screen_width/2 - 75, screen_height/2 + 50, 150, 40); // ustaw pozycję
+        this.add(Rbutton);
+        Rbutton.setFocusable(false);
+        Rbutton.addActionListener(e->{
+        	gf.dispose();
+        });
+	}
+	public void playSound(String fileName) {
+	    try {
+	        // Załaduj plik dźwiękowy z zasobów
+	        URL soundURL = getClass().getResource("/" + fileName);
+	        if (soundURL == null) {
+	            System.err.println("Nie znaleziono pliku dźwiękowego: " + fileName);
+	            return;
+	        }
+
+	        AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioIn);
+	        clip.start();
+	    } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+	        e.printStackTrace();
+	    }
 	}
 		
 

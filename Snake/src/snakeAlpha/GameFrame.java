@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 public class GameFrame extends JFrame{
 	GameFrame(MainInterfejs mainInter,SnakeParameters snakeParameters){
-		GamePanel gPanel = new GamePanel(mainInter,snakeParameters);
+		GamePanel gPanel = new GamePanel(mainInter,snakeParameters,this);
 		this.add(gPanel);
 		
 		this.setTitle("SNAKE");
