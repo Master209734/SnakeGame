@@ -45,6 +45,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	JButton Rbutton;
 	boolean buttonAdded;
 	GameFrame gf;
+	boolean bombColor = true;
 
 	
 	GamePanel(MainInterfejs mainInter,SnakeParameters snakeParameters,GameFrame gf){
@@ -104,7 +105,13 @@ public class GamePanel extends JPanel implements ActionListener{
 			}
 			// Bomby
 			if(BombExsist) {
-				g.setColor(Color.WHITE);
+				bombColor = !bombColor;
+				if(bombColor) {
+					g.setColor(Color.WHITE);
+					}
+				else {
+					g.setColor(Color.YELLOW);
+				}
 				g.fillOval(bombX, bombY, unit_size, unit_size);
 			}
 			
