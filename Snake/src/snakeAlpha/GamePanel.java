@@ -45,6 +45,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	JButton Rbutton;
 	boolean buttonAdded;
 	GameFrame gf;
+
 	
 	GamePanel(MainInterfejs mainInter,SnakeParameters snakeParameters,GameFrame gf){
 		
@@ -64,6 +65,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		x = new int[game_units];
 		y = new int[game_units];
 		
+	
 		random = new Random();
 		this.setPreferredSize(new Dimension(screen_width,screen_height));
 		this.setBackground(Color.black);
@@ -102,7 +104,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			}
 			// Bomby
 			if(BombExsist) {
-				g.setColor(Color.CYAN);
+				g.setColor(Color.WHITE);
 				g.fillOval(bombX, bombY, unit_size, unit_size);
 			}
 			
@@ -119,13 +121,8 @@ public class GamePanel extends JPanel implements ActionListener{
 			}
 			// Przeszkody
 				g.setColor(Color.WHITE);
-				if (LevelType == "Extreme") {
-					for (int i = 10; i<  (screen_height/unit_size - 9); i++) {
-						g.fillRect(screen_width/2, unit_size * i, unit_size, unit_size);
-						g.fillRect(unit_size*i, screen_height/2, unit_size, unit_size);
-					}
-				}
-				if (LevelType == "Fancy") {
+				
+				if (LevelType == "Fancy" || LevelType == "Extreme") {
 				for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
 					g.fillRect(5*unit_size, i*unit_size, unit_size, unit_size);
 					g.fillRect(screen_width - 6*unit_size, i*unit_size, unit_size, unit_size);
@@ -166,7 +163,7 @@ public class GamePanel extends JPanel implements ActionListener{
 	public void Apple() {
 	 appleX = random.nextInt((int)(screen_width/unit_size))*unit_size;
 	 appleY = random.nextInt((int)(screen_height/unit_size))*unit_size;
-	 if (LevelType == "fancy") {
+	 if (LevelType == "Fancy" || LevelType == "Extreme") {
 			// Czy nie pokrywa sie z przeszkodami
 			for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
 			if(((appleX == 5*unit_size) && (appleY == i*unit_size) )
@@ -215,7 +212,7 @@ public class GamePanel extends JPanel implements ActionListener{
 			}
 			
 			Random rand = new Random();
-			if ( (rand.nextInt(10) + 1) <= 5) {
+			if ( (rand.nextInt(10) + 1) <= 2) {
 				Bomb();
 				BombExsist = true;
 				if (bombTimer != null) {
@@ -269,7 +266,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		if (y[0] < 0) running = false;
 		if (y[0] > screen_height-unit_size) running = false;
 		
-		if (LevelType == "Fancy") {
+		if (LevelType == "Fancy" || LevelType == "Extreme") {
 		// Collisions with przeszkody
 		for(int i = screen_height/(2*unit_size) -4; i < screen_height/(2*unit_size) +4;i++) {
 		if(((x[0] == 5*unit_size) && (y[0] == i*unit_size) )
@@ -277,7 +274,8 @@ public class GamePanel extends JPanel implements ActionListener{
 			running = false;
 		}
 		}
-		}		
+		}
+	
 		
 		
 		if(!running) {
@@ -302,6 +300,7 @@ public class GamePanel extends JPanel implements ActionListener{
 		// TODO Auto-generated method stub
 		if(running) {
 			move();
+			
 			checkCollisions(); 
 			checkApple(); 
 			if(PeachExsist) {
@@ -418,7 +417,8 @@ public class GamePanel extends JPanel implements ActionListener{
 	        e.printStackTrace();
 	    }
 	}
-		
+	
+	
 
 	
 

@@ -12,7 +12,7 @@ public class InstructionPanel extends JPanel {
 	InstructionPanel()
 	{
 		this.setSize(1165,835);
-		BotPanel = new ImagePanel("/instr.png");
+		BotPanel = new ImagePanel("/Instruckja.jpg");
 		BotPanel.setPreferredSize(new Dimension(1165,835));
         this.add(BotPanel);        
 	}

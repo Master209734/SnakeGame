@@ -44,15 +44,18 @@ public class LevelPanel extends JPanel{
 	    	   par.SetDelay(65);
 	    	   
 	    	   ClassicButton.setBackground(null);
-	    	   FancyButton.setBackground(Color.GREEN);
+	    	   FancyButton.setBackground(Color.YELLOW);
 	    	   ExtremeButton.setBackground(null);
 	       });
 	       ExtremeButton.addActionListener(e->{
 	    	   par.SetLevel("Extreme");
+	    	   par.SetWidth(700);
+	    	   par.SetHeight(700);
+	    	   par.SetDelay(50);
 	    	   
 	    	   ClassicButton.setBackground(null);
 	    	   FancyButton.setBackground(null);
-	    	   ExtremeButton.setBackground(Color.GREEN);
+	    	   ExtremeButton.setBackground(Color.RED);
 	       });
 
 	        Dimension buttonSize = new Dimension(250, 50);
@@ -65,10 +68,9 @@ public class LevelPanel extends JPanel{
 	            topPanel.add(button);
 	        }
 	        
-	    JPanel bottomPanel = new JPanel();
-	    bottomPanel.setBackground(Color.RED);
-	    bottomPanel.setPreferredSize(new Dimension(1000,400));
-	    this.add(bottomPanel,BorderLayout.SOUTH);
+	        JPanel bottomPanel = new ImagePanel("/Levels.png");
+	        bottomPanel.setPreferredSize(new Dimension(1000,700));
+	        this.add(bottomPanel,BorderLayout.SOUTH);
 	        
 	}
 	JPanel GetTopPanel() {
